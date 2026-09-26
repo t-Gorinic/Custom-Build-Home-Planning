@@ -37,6 +37,8 @@ function exportData(){if(!db)return;const blob=new Blob([JSON.stringify(db,null,
 function exportHtml(){
  if(!db)return;
  const d=document.implementation.createHTMLDocument(C.appTitle+'（共有用）');d.documentElement.lang='ja';
+ // 文字コード宣言を先頭に配置
+ const charset=d.createElement('meta');charset.setAttribute('charset','utf-8');d.head.querySelectorAll('meta[charset]').forEach(n=>n.remove());d.head.insertBefore(charset,d.head.firstChild);
  const make=(tag,text)=>{const n=d.createElement(tag);if(text!==undefined)n.textContent=String(text);return n};
  const viewport=make('meta');viewport.name='viewport';viewport.content='width=device-width,initial-scale=1';d.head.append(viewport);
  const csp=make('meta');csp.httpEquiv='Content-Security-Policy';csp.content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; font-src 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'";d.head.append(csp);
@@ -48,7 +50,7 @@ function exportHtml(){
  const names=new Map(db.labels.map(l=>[l.id,l.name]));for(const item of db.items){const card=make('article');card.className='card';card.dataset.labels=JSON.stringify(item.labels);card.dataset.search=[item.title,item.detail,item.memo,...(item.related||[]),...item.labels.map(id=>names.get(id)||'')].join(' ').toLocaleLowerCase();card.append(make('h3',item.title));if(item.detail)card.append(make('p',item.detail));if(item.memo)card.append(make('p',C.memo+'：'+item.memo));if(item.related?.length)card.append(make('p',C.related+'：'+item.related.join(' / ')));const tags=make('div');tags.className='tags';for(const id of item.labels)if(names.has(id)){const tag=make('span',names.get(id));tag.className='tag';tags.append(tag)}card.append(tags);cards.append(card)}
  content.append(searchBox,count,cards,empty);layout.append(filters,content);main.append(layout);d.body.append(main);
  const script=make('script',`(()=>{'use strict';const search=document.querySelector('input[type="search"]'),checks=[...document.querySelectorAll('input[type="checkbox"]')],cards=[...document.querySelectorAll('article.card')],count=document.querySelector('.count'),empty=document.querySelector('.empty');function update(){const selected=checks.filter(x=>x.checked).map(x=>x.value),q=search.value.trim().toLocaleLowerCase();let n=0;for(const card of cards){const show=selected.every(id=>JSON.parse(card.dataset.labels).includes(id))&&(!q||card.dataset.search.includes(q));card.hidden=!show;if(show)n++}count.textContent=n+' 件を表示';empty.hidden=n!==0}search.addEventListener('input',update);for(const check of checks)check.addEventListener('change',update);update()})();`);d.body.append(script);
- const blob=new Blob(['<!doctype html>\n'+d.documentElement.outerHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download=C.appTitle+'_共有用_'+new Date().toISOString().slice(0,10)+'.html';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)
+ const blob=new Blob(['\uFEFF','<!doctype html>\n',d.documentElement.outerHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download='home-planning-share_'+new Date().toISOString().slice(0,10)+'.html';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)
 }
 function render(){
  document.title=C.appTitle;

@@ -23,3 +23,9 @@ The owner's private baseline JSON data is not included in this archive. Do not a
 The app includes a button to export a standalone, read-only HTML snapshot of the data currently loaded in the browser. A recipient can search and filter the snapshot, but cannot edit it through the exported page. **The export includes all loaded items, including notes, not just the items currently visible after filtering.** Review its contents before sharing it with anyone.
 
 This export feature does not change the request above: please do not use the app yourself.
+
+## Sending an exported HTML file through LINE
+
+The export uses UTF-8, an explicit charset declaration, a UTF-8 byte-order mark, and an ASCII-only filename. These measures can reduce filename and text decoding issues, but they cannot control LINE's file handling or guarantee that its ZIP preview will render an HTML page. If LINE packages the HTML as ZIP, save and extract the ZIP, then open the `.html` file in a browser rather than viewing the ZIP preview. The recipient's browser or file viewer may restrict local JavaScript; filtering cannot be guaranteed in every preview.
+
+The exported HTML contains all loaded items and notes, including items hidden by filters. Review the entire file before sharing.
