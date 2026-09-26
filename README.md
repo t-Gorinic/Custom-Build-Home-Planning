@@ -6,6 +6,10 @@ This is a personal app created for one individual's own custom-home planning. It
 
 The app's categories, priorities, wording, and workflow reflect one person's circumstances. They should not be treated as a general-purpose checklist, recommendation, or source of advice.
 
+## Interface
+
+The interface uses a quiet editorial layout with restrained typography, subtle paper-like depth, and numbered entries. The standalone HTML export uses the same visual language while remaining read-only.
+
 ## What is in this archive
 
 - `index.html`, `app.js`, `style.css`, and `config.json`: the personal app and its interface configuration.
