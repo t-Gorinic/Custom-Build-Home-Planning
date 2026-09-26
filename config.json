@@ -98,5 +98,6 @@
     "費用": "cost",
     "自由ラベル": "custom"
   },
-  "fontAttribution": "Noto Sans CJK JP / SIL Open Font License 1.1"
+  "fontAttribution": "Noto Sans CJK JP / SIL Open Font License 1.1",
+  "exportHtml": "共有用HTMLを書き出す"
 }
